@@ -153,16 +153,16 @@ pcall(function() if syn and syn.protect_gui then syn.protect_gui(screenGui) end 
 screenGui.Parent = parent
 
 local theme = {
-    shell = Color3.fromRGB(24, 22, 27),
-    shell2 = Color3.fromRGB(30, 27, 33),
-    panel = Color3.fromRGB(34, 31, 37),
-    panel2 = Color3.fromRGB(42, 38, 46),
-    panelSoft = Color3.fromRGB(52, 47, 57),
-    stroke = Color3.fromRGB(76, 71, 84),
+    shell = Color3.fromRGB(64, 58, 68),
+    shell2 = Color3.fromRGB(58, 51, 61),
+    panel = Color3.fromRGB(67, 59, 70),
+    panel2 = Color3.fromRGB(79, 70, 82),
+    panelSoft = Color3.fromRGB(96, 86, 102),
+    stroke = Color3.fromRGB(128, 118, 137),
     text = Color3.fromRGB(244, 241, 247),
-    muted = Color3.fromRGB(125, 119, 136),
-    accent = Color3.fromRGB(255, 95, 102),
-    accentSoft = Color3.fromRGB(255, 126, 134),
+    muted = Color3.fromRGB(187, 179, 198),
+    accent = Color3.fromRGB(255, 89, 95),
+    accentSoft = Color3.fromRGB(255, 121, 129),
     white = Color3.fromRGB(255, 255, 255),
 }
 
@@ -367,7 +367,7 @@ local ICON_SPRITES = {
     recoil = { Id = "rbxassetid://16898613777", Offset = Vector2.new(404, 771) },
 }
 
-local SIDE_LABEL_MUTED = Color3.fromRGB(112, 106, 123)
+local SIDE_LABEL_MUTED = Color3.fromRGB(206, 198, 216)
 
 local overlay = create("Frame", { Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, BorderSizePixel = 0, Parent = screenGui })
 local canvas = create("Frame", { AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5), Size = UDim2.fromOffset(BASE.X, BASE.Y), BackgroundTransparency = 1, Parent = overlay })
@@ -396,37 +396,21 @@ if Workspace.CurrentCamera then
     manageConnection(Workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(rescale))
 end
 
-local mainShadow = create("Frame", {
-    AnchorPoint = Vector2.new(0.5, 0.5),
-    Position = UDim2.fromScale(0.5, 0.5),
-    Size = UDim2.fromOffset(996, 684),
-    BackgroundColor3 = Color3.fromRGB(0, 0, 0),
-    BackgroundTransparency = 0.42,
-    BorderSizePixel = 0,
-    ZIndex = 2,
-    Parent = canvas,
-})
-corner(mainShadow, 40)
-grad(mainShadow, 90, {
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 0, 0)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(14, 12, 18)),
-})
-
 local main = create("Frame", {
     AnchorPoint = Vector2.new(0.5, 0.5),
     Position = UDim2.fromScale(0.5, 0.5),
-    Size = UDim2.fromOffset(968, 652),
+    Size = UDim2.fromOffset(976, 664),
     BackgroundColor3 = theme.shell,
     BorderSizePixel = 0,
     ZIndex = 4,
     Parent = canvas,
 })
-corner(main, 34)
+corner(main, 36)
 local mainScale = create("UIScale", { Scale = 1, Parent = main })
-stroke(main, theme.stroke, 0.58, 1)
+stroke(main, theme.stroke, 0.2, 1.2)
 grad(main, 90, {
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(30, 27, 32)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(22, 20, 25)),
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(74, 67, 78)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(60, 54, 64)),
 })
 main.ClipsDescendants = true
 
@@ -598,41 +582,31 @@ local function makeCornerAccents(parent, z)
 end
 
 
-local brandShadow = create("Frame", {
-    Position = UDim2.fromOffset(22, 24),
-    Size = UDim2.fromOffset(274, 68),
-    BackgroundColor3 = Color3.fromRGB(0, 0, 0),
-    BackgroundTransparency = 0.55,
-    BorderSizePixel = 0,
-    ZIndex = 5,
-    Parent = main,
-})
-corner(brandShadow, 24)
-local brand = create("Frame", { Position = UDim2.fromOffset(24, 22), Size = UDim2.fromOffset(270, 64), BackgroundColor3 = theme.shell2, BorderSizePixel = 0, ZIndex = 6, Parent = main })
-corner(brand, 22)
-local brandStroke = stroke(brand, theme.stroke, 0.82, 1)
+local brand = create("Frame", { Position = UDim2.fromOffset(24, 22), Size = UDim2.fromOffset(286, 70), BackgroundColor3 = theme.shell2, BorderSizePixel = 0, ZIndex = 6, Parent = main })
+corner(brand, 24)
+local brandStroke = stroke(brand, Color3.fromRGB(110, 102, 119), 0.82, 1)
 grad(brand, 90, {
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(34, 31, 37)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(27, 24, 30)),
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(60, 53, 63)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(55, 49, 58)),
 })
 local brandBox = create("Frame", {
-    Position = UDim2.fromOffset(12, 12),
-    Size = UDim2.fromOffset(40, 40),
-    BackgroundColor3 = Color3.fromRGB(18, 16, 20),
+    Position = UDim2.fromOffset(13, 12),
+    Size = UDim2.fromOffset(46, 46),
+    BackgroundColor3 = Color3.fromRGB(20, 18, 24),
     BorderSizePixel = 0,
     ZIndex = 7,
     Parent = brand,
 })
-corner(brandBox, 12)
-local brandBoxStroke = stroke(brandBox, Color3.fromRGB(86, 79, 95), 0.64, 1)
+corner(brandBox, 14)
+local brandBoxStroke = stroke(brandBox, Color3.fromRGB(115, 105, 126), 0.78, 1)
 local brandBoxGrad = grad(brandBox, 90, {
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(25, 22, 27)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(17, 15, 20)),
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(28, 25, 32)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(18, 16, 22)),
 })
 local brandLetter = create("ImageLabel", {
     AnchorPoint = Vector2.new(0.5, 0.5),
     Position = UDim2.fromScale(0.5, 0.5),
-    Size = UDim2.fromOffset(34, 34),
+    Size = UDim2.fromOffset(40, 40),
     BackgroundTransparency = 1,
     BorderSizePixel = 0,
     Image = "rbxassetid://95109736896642",
@@ -640,28 +614,28 @@ local brandLetter = create("ImageLabel", {
     ZIndex = 8,
     Parent = brandBox,
 })
+corner(brandLetter, 11)
 local brandTitleGlow = create("TextLabel", {
-    Position = UDim2.fromOffset(62, 11),
-    Size = UDim2.fromOffset(184, 20),
+    Position = UDim2.fromOffset(69, 13),
+    Size = UDim2.fromOffset(184, 22),
     BackgroundTransparency = 1,
     Font = Enum.Font.GothamBold,
     Text = "Flow",
     TextColor3 = Color3.fromRGB(0, 0, 0),
-    TextTransparency = 1,
-    TextSize = 15,
+    TextTransparency = 0.46,
+    TextSize = 17,
     TextXAlignment = Enum.TextXAlignment.Left,
     ZIndex = 7,
     Parent = brand,
 })
-local brandTitle = create("TextLabel", { Position = UDim2.fromOffset(61, 10), Size = UDim2.fromOffset(184, 20), BackgroundTransparency = 1, Font = Enum.Font.GothamBold, Text = "Flow", TextColor3 = theme.text, TextSize = 15, TextXAlignment = Enum.TextXAlignment.Left, ZIndex = 8, Parent = brand })
+local brandTitle = create("TextLabel", { Position = UDim2.fromOffset(68, 12), Size = UDim2.fromOffset(184, 22), BackgroundTransparency = 1, Font = Enum.Font.GothamBold, Text = "Flow", TextColor3 = Color3.fromRGB(198, 193, 207), TextSize = 17, TextXAlignment = Enum.TextXAlignment.Left, ZIndex = 8, Parent = brand })
 local brandTitleSweep = create("Frame", {
-    Position = UDim2.fromOffset(61, 10),
-    Size = UDim2.fromOffset(0, 0),
+    Position = UDim2.fromOffset(68, 12),
+    Size = UDim2.fromOffset(100, 22),
     BackgroundTransparency = 1,
     BorderSizePixel = 0,
     ClipsDescendants = true,
     ZIndex = 9,
-    Visible = false,
     Parent = brand,
 })
 local brandTitleShineGlow = create("TextLabel", {
@@ -671,10 +645,10 @@ local brandTitleShineGlow = create("TextLabel", {
     Font = Enum.Font.GothamBold,
     Text = "Flow",
     TextColor3 = theme.white,
-    TextTransparency = 1,
+    TextTransparency = 0.62,
     TextStrokeColor3 = theme.white,
     TextStrokeTransparency = 0.82,
-    TextSize = 15,
+    TextSize = 19,
     TextXAlignment = Enum.TextXAlignment.Left,
     ZIndex = 9,
     Parent = brandTitleSweep,
@@ -686,110 +660,106 @@ local brandTitleShine = create("TextLabel", {
     Font = Enum.Font.GothamBold,
     Text = "Flow",
     TextColor3 = theme.white,
-    TextTransparency = 1,
+    TextTransparency = 0,
     TextStrokeColor3 = theme.white,
     TextStrokeTransparency = 0.58,
-    TextSize = 15,
+    TextSize = 17,
     TextXAlignment = Enum.TextXAlignment.Left,
     ZIndex = 10,
     Parent = brandTitleSweep,
 })
-local brandSub = create("TextLabel", { Position = UDim2.fromOffset(61, 30), Size = UDim2.fromOffset(184, 14), BackgroundTransparency = 1, Font = Enum.Font.GothamMedium, Text = "The shell for your script stack.", TextColor3 = Color3.fromRGB(102, 97, 112), TextSize = 10, TextXAlignment = Enum.TextXAlignment.Left, ZIndex = 7, Parent = brand })
+local brandSub = create("TextLabel", { Position = UDim2.fromOffset(68, 36), Size = UDim2.fromOffset(184, 16), BackgroundTransparency = 1, Font = Enum.Font.GothamMedium, Text = "The shell for your script stack.", TextColor3 = Color3.fromRGB(149, 140, 160), TextSize = 11, TextXAlignment = Enum.TextXAlignment.Left, ZIndex = 7, Parent = brand })
 
-local avatar = create("Frame", { Position = UDim2.new(1, -72, 0, 18), Size = UDim2.fromOffset(48, 48), BackgroundTransparency = 1, BorderSizePixel = 0, ZIndex = 7, Parent = main })
-corner(avatar, 24)
-local avatarImage = create("ImageLabel", { Position = UDim2.fromOffset(2, 2), Size = UDim2.new(1, -4, 1, -4), BackgroundTransparency = 1, ZIndex = 8, Parent = avatar })
+local avatar = create("Frame", { Position = UDim2.new(1, -74, 0, 20), Size = UDim2.fromOffset(50, 50), BackgroundTransparency = 1, BorderSizePixel = 0, ZIndex = 7, Parent = main })
+corner(avatar, 25)
+local avatarImage = create("ImageLabel", { Position = UDim2.fromOffset(3, 3), Size = UDim2.new(1, -6, 1, -6), BackgroundTransparency = 1, ZIndex = 8, Parent = avatar })
 corner(avatarImage, 22)
-local avatarStroke = stroke(avatarImage, Color3.fromRGB(92, 86, 101), 0.4, 1.2)
+local avatarStroke = stroke(avatarImage, Color3.fromRGB(134, 124, 147), 0.3, 1.4)
 pcall(function() avatarImage.Image = Players:GetUserThumbnailAsync(LocalPlayer.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size100x100) end)
-local playerName = create("TextLabel", { Position = UDim2.new(1, -226, 0, 15), Size = UDim2.fromOffset(138, 20), BackgroundTransparency = 1, Font = Enum.Font.GothamBold, Text = LocalPlayer and LocalPlayer.Name or "Flow User", TextColor3 = theme.text, TextSize = 14, TextXAlignment = Enum.TextXAlignment.Right, TextTruncate = Enum.TextTruncate.AtEnd, ZIndex = 7, Parent = main })
-local playerSub = create("TextLabel", { Position = UDim2.new(1, -226, 0, 35), Size = UDim2.fromOffset(138, 16), BackgroundTransparency = 1, Font = Enum.Font.GothamMedium, Text = "Till: 1 Mar 2026", TextColor3 = Color3.fromRGB(103, 98, 112), TextSize = 10, TextXAlignment = Enum.TextXAlignment.Right, TextTruncate = Enum.TextTruncate.AtEnd, ZIndex = 7, Parent = main })
+local playerName = create("TextLabel", { Position = UDim2.new(1, -228, 0, 16), Size = UDim2.fromOffset(142, 22), BackgroundTransparency = 1, Font = Enum.Font.GothamBold, Text = LocalPlayer and LocalPlayer.Name or "Flow User", TextColor3 = theme.text, TextSize = 15, TextXAlignment = Enum.TextXAlignment.Right, TextTruncate = Enum.TextTruncate.AtEnd, ZIndex = 7, Parent = main })
+local playerSub = create("TextLabel", { Position = UDim2.new(1, -228, 0, 39), Size = UDim2.fromOffset(142, 18), BackgroundTransparency = 1, Font = Enum.Font.GothamMedium, Text = "Till: 1 Mar 2026", TextColor3 = theme.muted, TextSize = 11, TextXAlignment = Enum.TextXAlignment.Right, TextTruncate = Enum.TextTruncate.AtEnd, ZIndex = 7, Parent = main })
 
 local searchFrame = create("Frame", {
-    Position = UDim2.fromOffset(496, 22),
-    Size = UDim2.fromOffset(212, 40),
-    BackgroundColor3 = Color3.fromRGB(23, 21, 26),
+    Position = UDim2.fromOffset(470, 24),
+    Size = UDim2.fromOffset(238, 42),
+    BackgroundColor3 = Color3.fromRGB(24, 21, 29),
     BorderSizePixel = 0,
     ZIndex = 14,
     Parent = main,
 })
-corner(searchFrame, 18)
-local searchStroke = stroke(searchFrame, Color3.fromRGB(74, 69, 82), 0.72, 1)
+corner(searchFrame, 20)
+local searchStroke = stroke(searchFrame, Color3.fromRGB(88, 81, 100), 0.52, 1)
 grad(searchFrame, 90, {
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(28, 25, 31)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(20, 18, 23)),
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(30, 27, 35)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(16, 14, 20)),
 })
 local searchIcon = create("ImageLabel", {
-    Position = UDim2.fromOffset(14, 11),
-    Size = UDim2.fromOffset(18, 18),
+    Position = UDim2.fromOffset(14, 12),
+    Size = UDim2.fromOffset(16, 16),
     BackgroundTransparency = 1,
     BorderSizePixel = 0,
     Image = "rbxassetid://10734943674",
-    ImageColor3 = Color3.fromRGB(108, 103, 119),
+    ImageColor3 = Color3.fromRGB(126, 118, 138),
     ZIndex = 15,
     Parent = searchFrame,
 })
 local searchBox = create("TextBox", {
-    Position = UDim2.fromOffset(40, 0),
-    Size = UDim2.new(1, -52, 1, 0),
+    Position = UDim2.fromOffset(38, 0),
+    Size = UDim2.new(1, -50, 1, 0),
     BackgroundTransparency = 1,
     BorderSizePixel = 0,
     ClearTextOnFocus = false,
     Font = Enum.Font.GothamMedium,
-    PlaceholderText = "Search controls...",
-    PlaceholderColor3 = Color3.fromRGB(98, 93, 108),
+    PlaceholderText = "Search tabs/groups...",
+    PlaceholderColor3 = Color3.fromRGB(130, 122, 142),
     Text = "",
     TextColor3 = theme.text,
-    TextSize = 12,
+    TextSize = 13,
     TextXAlignment = Enum.TextXAlignment.Left,
     ZIndex = 15,
     Parent = searchFrame,
 })
 searchBox.Focused:Connect(function()
-    tween(searchFrame, { BackgroundColor3 = Color3.fromRGB(27, 24, 30) }, 0.16, Enum.EasingStyle.Sine)
-    tween(searchStroke, { Transparency = 0.28, Color = Color3.fromRGB(98, 92, 108) }, 0.16, Enum.EasingStyle.Sine)
+    tween(searchFrame, { BackgroundColor3 = Color3.fromRGB(28, 25, 33) }, 0.16, Enum.EasingStyle.Sine)
+    tween(searchStroke, { Transparency = 0.18, Color = Color3.fromRGB(126, 117, 144) }, 0.16, Enum.EasingStyle.Sine)
     tween(searchIcon, { ImageColor3 = theme.white }, 0.16, Enum.EasingStyle.Sine)
 end)
 searchBox.FocusLost:Connect(function()
-    tween(searchFrame, { BackgroundColor3 = Color3.fromRGB(23, 21, 26) }, 0.16, Enum.EasingStyle.Sine)
-    tween(searchStroke, { Transparency = 0.72, Color = Color3.fromRGB(74, 69, 82) }, 0.16, Enum.EasingStyle.Sine)
-    tween(searchIcon, { ImageColor3 = Color3.fromRGB(108, 103, 119) }, 0.16, Enum.EasingStyle.Sine)
+    tween(searchFrame, { BackgroundColor3 = Color3.fromRGB(24, 21, 29) }, 0.16, Enum.EasingStyle.Sine)
+    tween(searchStroke, { Transparency = 0.52, Color = Color3.fromRGB(88, 81, 100) }, 0.16, Enum.EasingStyle.Sine)
+    tween(searchIcon, { ImageColor3 = Color3.fromRGB(126, 118, 138) }, 0.16, Enum.EasingStyle.Sine)
 end)
 
-local sideShadow = create("Frame", { Position = UDim2.fromOffset(22, 120), Size = UDim2.fromOffset(102, 504), BackgroundColor3 = Color3.fromRGB(0, 0, 0), BackgroundTransparency = 0.58, BorderSizePixel = 0, ZIndex = 5, Parent = main })
-corner(sideShadow, 30)
-local side = create("Frame", { Position = UDim2.fromOffset(24, 116), Size = UDim2.fromOffset(100, 500), BackgroundColor3 = theme.shell2, BorderSizePixel = 0, ZIndex = 6, Parent = main })
-corner(side, 30)
-stroke(side, theme.stroke, 0.82, 1)
+local side = create("Frame", { Position = UDim2.fromOffset(24, 116), Size = UDim2.fromOffset(94, 500), BackgroundColor3 = theme.shell2, BorderSizePixel = 0, ZIndex = 6, Parent = main })
+corner(side, 28)
+stroke(side, Color3.fromRGB(118, 109, 127), 0.68, 1)
 grad(side, 90, {
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(34, 31, 37)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(27, 24, 30)),
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(62, 54, 65)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(52, 45, 55)),
 })
-local sideMark = create("Frame", { Position = UDim2.fromOffset(93, 37), Size = UDim2.fromOffset(5, 30), BackgroundColor3 = state.accent, BorderSizePixel = 0, ZIndex = 8, Parent = side })
-corner(sideMark, 3)
-create("Frame", { Position = UDim2.fromOffset(20, 238), Size = UDim2.fromOffset(58, 1), BackgroundColor3 = theme.stroke, BackgroundTransparency = 0.9, BorderSizePixel = 0, ZIndex = 7, Parent = side })
-create("Frame", { Position = UDim2.fromOffset(20, 342), Size = UDim2.fromOffset(58, 1), BackgroundColor3 = theme.stroke, BackgroundTransparency = 0.9, BorderSizePixel = 0, ZIndex = 7, Parent = side })
+local sideMark = create("Frame", { Position = UDim2.fromOffset(88, 29), Size = UDim2.fromOffset(6, 36), BackgroundColor3 = state.accent, BorderSizePixel = 0, ZIndex = 8, Parent = side })
+corner(sideMark, 4)
+create("Frame", { Position = UDim2.fromOffset(16, 236), Size = UDim2.fromOffset(62, 1), BackgroundColor3 = theme.stroke, BackgroundTransparency = 0.76, BorderSizePixel = 0, ZIndex = 7, Parent = side })
+create("Frame", { Position = UDim2.fromOffset(16, 340), Size = UDim2.fromOffset(62, 1), BackgroundColor3 = theme.stroke, BackgroundTransparency = 0.76, BorderSizePixel = 0, ZIndex = 7, Parent = side })
 
-local chipBarShadow = create("Frame", { Position = UDim2.fromOffset(146, 118), Size = UDim2.fromOffset(548, 60), BackgroundColor3 = Color3.fromRGB(0, 0, 0), BackgroundTransparency = 0.62, BorderSizePixel = 0, ZIndex = 5, Parent = main })
-corner(chipBarShadow, 28)
-local chipBar = create("Frame", { Position = UDim2.fromOffset(150, 114), Size = UDim2.fromOffset(540, 56), BackgroundColor3 = theme.shell2, BorderSizePixel = 0, ZIndex = 6, Parent = main })
-corner(chipBar, 26)
-stroke(chipBar, theme.stroke, 0.86, 1)
+local chipBar = create("Frame", { Position = UDim2.fromOffset(150, 114), Size = UDim2.fromOffset(488, 60), BackgroundColor3 = theme.shell2, BorderSizePixel = 0, ZIndex = 6, Parent = main })
+corner(chipBar, 28)
+stroke(chipBar, Color3.fromRGB(118, 109, 127), 0.68, 1)
 grad(chipBar, 90, {
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(34, 31, 37)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(27, 24, 30)),
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(62, 54, 65)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(52, 45, 55)),
 })
-local activeTabPill = create("Frame", { Position = UDim2.fromOffset(258, 6), Size = UDim2.fromOffset(146, 44), BackgroundColor3 = theme.panelSoft, BorderSizePixel = 0, ZIndex = 7, Parent = chipBar })
-corner(activeTabPill, 22)
-stroke(activeTabPill, Color3.fromRGB(84, 79, 91), 0.84, 1)
+local activeTabPill = create("Frame", { Position = UDim2.fromOffset(258, 5), Size = UDim2.fromOffset(146, 50), BackgroundColor3 = theme.panelSoft, BorderSizePixel = 0, ZIndex = 7, Parent = chipBar })
+corner(activeTabPill, 24)
+stroke(activeTabPill, Color3.fromRGB(138, 129, 148), 0.52, 1)
 local activeTabGrad = grad(activeTabPill, 90, {
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(52, 47, 57)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(45, 41, 49)),
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(107, 97, 114)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(90, 81, 96)),
 })
-local tabArrowWrap = create("Frame", { AnchorPoint = Vector2.new(1, 0.5), Position = UDim2.new(1, -8, 0.5, 0), Size = UDim2.fromOffset(32, 32), BackgroundColor3 = Color3.fromRGB(37, 34, 41), BorderSizePixel = 0, ZIndex = 8, Parent = chipBar })
-corner(tabArrowWrap, 16)
-stroke(tabArrowWrap, Color3.fromRGB(62, 57, 68), 0.9, 1)
-create("TextLabel", { Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, Font = Enum.Font.GothamBold, Text = ">", TextColor3 = Color3.fromRGB(109, 103, 118), TextSize = 16, ZIndex = 9, Parent = tabArrowWrap })
+local tabArrowWrap = create("Frame", { AnchorPoint = Vector2.new(1, 0.5), Position = UDim2.new(1, -10, 0.5, 0), Size = UDim2.fromOffset(34, 34), BackgroundColor3 = theme.panel, BorderSizePixel = 0, ZIndex = 8, Parent = chipBar })
+corner(tabArrowWrap, 17)
+stroke(tabArrowWrap, Color3.fromRGB(126, 116, 135), 0.62, 1)
+create("TextLabel", { Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, Font = Enum.Font.GothamBold, Text = ">", TextColor3 = theme.muted, TextSize = 18, ZIndex = 9, Parent = tabArrowWrap })
 
 local CONTENT_X = 146
 local CONTENT_Y = 188
@@ -927,8 +897,8 @@ local function switchTab(name, x, w)
             ref.Sync(false)
         end
         tween(activeTabPill, {
-            Position = UDim2.fromOffset(x, 6),
-            Size = UDim2.fromOffset(w, 44),
+            Position = UDim2.fromOffset(x, 5),
+            Size = UDim2.fromOffset(w, 50),
             BackgroundColor3 = theme.panelSoft,
         }, 0.32, Enum.EasingStyle.Circular)
         task.delay(0.24, function()
@@ -940,21 +910,21 @@ local function switchTab(name, x, w)
 end
 
 local function makeSideButton(name, iconType, y)
-    local frame = create("Frame", { Position = UDim2.fromOffset(14, y), Size = UDim2.fromOffset(70, 68), BackgroundColor3 = theme.shell2, BorderSizePixel = 0, ZIndex = 7, Parent = side })
-    corner(frame, 22)
-    local icon = makeAssetIcon(frame, ICON_SPRITES[iconType] or ICON_SPRITES.main, UDim2.fromOffset(24, 16), 22, 8)
-    local hoverGlow = create("Frame", { Position = UDim2.fromOffset(4, 4), Size = UDim2.new(1, -8, 1, -8), BackgroundColor3 = theme.panel2, BackgroundTransparency = 1, BorderSizePixel = 0, ZIndex = 7, Parent = frame })
-    corner(hoverGlow, 18)
-    local cornerAccents = {}
+    local frame = create("Frame", { Position = UDim2.fromOffset(11, y), Size = UDim2.fromOffset(72, 62), BackgroundColor3 = theme.shell2, BorderSizePixel = 0, ZIndex = 7, Parent = side })
+    corner(frame, 18)
+    local icon = makeAssetIcon(frame, ICON_SPRITES[iconType] or ICON_SPRITES.main, UDim2.fromOffset(23, 8), 26, 8)
+    local hoverGlow = create("Frame", { Position = UDim2.fromOffset(2, 2), Size = UDim2.new(1, -4, 1, -4), BackgroundColor3 = theme.panel2, BackgroundTransparency = 1, BorderSizePixel = 0, ZIndex = 7, Parent = frame })
+    corner(hoverGlow, 16)
+    local cornerAccents = makeCornerAccents(frame, 9)
     local label = create("TextLabel", {
-        Position = UDim2.fromOffset(0, 46),
-        Size = UDim2.fromOffset(70, 12),
+        Position = UDim2.fromOffset(0, 38),
+        Size = UDim2.fromOffset(72, 16),
         BackgroundTransparency = 1,
         Font = Enum.Font.GothamBold,
         Text = name,
         TextColor3 = SIDE_LABEL_MUTED,
-        TextSize = 8,
-        TextTransparency = 0.72,
+        TextSize = 10,
+        TextTransparency = 0.04,
         ZIndex = 8,
         Parent = frame,
     })
@@ -962,13 +932,13 @@ local function makeSideButton(name, iconType, y)
     local hovered = false
     local function syncVisuals(instant)
         local on = state.section == name
-        local bg = on and Color3.fromRGB(35, 32, 40) or theme.shell2
-        local glowTransparency = on and 0.78 or (hovered and 0.9 or 1)
-        local labelColor = on and Color3.fromRGB(158, 152, 169) or SIDE_LABEL_MUTED
-        local labelTransparency = on and 0.3 or 0.78
-        local iconColor = on and theme.white or (hovered and Color3.fromRGB(182, 176, 193) or Color3.fromRGB(102, 96, 112))
-        local accentColor = state.accent
-        local accentTransparency = on and 0 or 1
+        local bg = on and theme.panel or theme.shell2
+        local glowTransparency = on and 1 or (hovered and 0.28 or 1)
+        local labelColor = on and theme.text or (hovered and theme.white or SIDE_LABEL_MUTED)
+        local labelTransparency = on and 0 or (hovered and 0 or 0.04)
+        local iconColor = on and theme.text or (hovered and theme.white or theme.muted)
+        local accentColor = on and state.accent:Lerp(theme.white, 0.2) or (hovered and Color3.fromRGB(166, 157, 181) or Color3.fromRGB(132, 122, 145))
+        local accentTransparency = on and 0 or (hovered and 0.14 or 1)
         if instant then
             frame.BackgroundColor3 = bg
             hoverGlow.BackgroundTransparency = glowTransparency
@@ -1004,7 +974,7 @@ local function makeSideButton(name, iconType, y)
         for key, ref in pairs(sideRefs) do
             local on = key == name
             ref.Sync(false)
-            if on then tween(sideMark, { Position = UDim2.fromOffset(93, ref.Y + 19), BackgroundColor3 = state.accent }, 0.16) end
+            if on then tween(sideMark, { Position = UDim2.fromOffset(88, ref.Y + 11), BackgroundColor3 = state.accent }, 0.16) end
         end
     end)
     sideRefs[name] = { Frame = frame, Icon = icon, Label = label, Glow = hoverGlow, Y = y, Sync = syncVisuals }
@@ -1019,18 +989,18 @@ makeSideButton("Folder", "folder", 346)
 makeSideButton("Settings", "settings", 420)
 
 local function makeTab(name, iconKind, x, w)
-    local frame = create("Frame", { Position = UDim2.fromOffset(x, 6), Size = UDim2.fromOffset(w, 44), BackgroundTransparency = 1, BorderSizePixel = 0, ZIndex = 9, Parent = chipBar })
+    local frame = create("Frame", { Position = UDim2.fromOffset(x, 5), Size = UDim2.fromOffset(w, 50), BackgroundTransparency = 1, BorderSizePixel = 0, ZIndex = 9, Parent = chipBar })
     local hoverBg = create("Frame", { Size = UDim2.fromScale(1, 1), BackgroundColor3 = theme.panel2, BackgroundTransparency = 1, BorderSizePixel = 0, ZIndex = 9, Parent = frame })
-    corner(hoverBg, 20)
-    local icon = makeAssetIcon(frame, ICON_SPRITES[iconKind] or ICON_SPRITES.target, UDim2.fromOffset(16, 14), 16, 10)
-    local text = create("TextLabel", { Position = UDim2.fromOffset(40, 0), Size = UDim2.new(1, -48, 1, 0), BackgroundTransparency = 1, Font = Enum.Font.GothamSemibold, Text = name, TextColor3 = theme.muted, TextSize = 13, TextXAlignment = Enum.TextXAlignment.Left, ZIndex = 10, Parent = frame })
+    corner(hoverBg, 22)
+    local icon = makeAssetIcon(frame, ICON_SPRITES[iconKind] or ICON_SPRITES.target, UDim2.fromOffset(16, 16), 18, 10)
+    local text = create("TextLabel", { Position = UDim2.fromOffset(46, 0), Size = UDim2.new(1, -54, 1, 0), BackgroundTransparency = 1, Font = Enum.Font.GothamSemibold, Text = name, TextColor3 = theme.muted, TextSize = 14, TextXAlignment = Enum.TextXAlignment.Left, ZIndex = 10, Parent = frame })
     local button = create("TextButton", { Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, Text = "", AutoButtonColor = false, ZIndex = 11, Parent = frame })
     local hovered = false
     local function syncVisuals(instant)
         local on = state.tab == name
-        local textColor = on and theme.white or (hovered and Color3.fromRGB(170, 164, 181) or Color3.fromRGB(108, 102, 119))
-        local iconColor = on and theme.white or (hovered and Color3.fromRGB(170, 164, 181) or Color3.fromRGB(92, 87, 103))
-        local hoverTransparency = on and 1 or (hovered and 0.86 or 1)
+        local textColor = on and theme.white or (hovered and theme.white or theme.muted)
+        local iconColor = on and theme.white or (hovered and theme.white or theme.muted)
+        local hoverTransparency = on and 1 or (hovered and 0.18 or 1)
         if instant then
             text.TextColor3 = textColor
             hoverBg.BackgroundTransparency = hoverTransparency
@@ -1066,25 +1036,22 @@ makeTab("Triggerbot", "trigger", 126, 124)
 makeTab("NoRecoil", "recoil", 258, 146)
 
 local function sectionLabel(x, y, text, parentRef)
-    return create("TextLabel", { Position = UDim2.fromOffset(x, y), Size = UDim2.fromOffset(CARD_WIDTH, 20), BackgroundTransparency = 1, Font = Enum.Font.GothamMedium, Text = text, TextColor3 = Color3.fromRGB(96, 92, 107), TextSize = 12, TextXAlignment = Enum.TextXAlignment.Left, ZIndex = 6, Parent = parentRef or content })
+    return create("TextLabel", { Position = UDim2.fromOffset(x, y), Size = UDim2.fromOffset(CARD_WIDTH, 22), BackgroundTransparency = 1, Font = Enum.Font.GothamMedium, Text = text, TextColor3 = theme.muted, TextSize = 13, TextXAlignment = Enum.TextXAlignment.Left, ZIndex = 6, Parent = parentRef or content })
 end
 
 local function card(x, y, h, parentRef)
-    local parentObject = parentRef or content
-    local shadow = create("Frame", { Position = UDim2.fromOffset(x - 2, y + 6), Size = UDim2.fromOffset(CARD_WIDTH + 4, h + 4), BackgroundColor3 = Color3.fromRGB(0, 0, 0), BackgroundTransparency = 0.58, BorderSizePixel = 0, ZIndex = 5, Parent = parentObject })
-    corner(shadow, 24)
-    local c = create("Frame", { Position = UDim2.fromOffset(x, y), Size = UDim2.fromOffset(CARD_WIDTH, h), BackgroundColor3 = theme.panel, BorderSizePixel = 0, ZIndex = 6, Parent = parentObject })
-    corner(c, 24)
-    stroke(c, Color3.fromRGB(62, 58, 70), 0.82, 1)
+    local c = create("Frame", { Position = UDim2.fromOffset(x, y), Size = UDim2.fromOffset(CARD_WIDTH, h), BackgroundColor3 = theme.panel, BorderSizePixel = 0, ZIndex = 6, Parent = parentRef or content })
+    corner(c, 22)
+    stroke(c, Color3.fromRGB(112, 103, 120), 0.56, 1)
     grad(c, 90, {
-        ColorSequenceKeypoint.new(0, Color3.fromRGB(36, 33, 40)),
-        ColorSequenceKeypoint.new(1, Color3.fromRGB(29, 27, 33)),
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(73, 64, 75)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(62, 54, 64)),
     })
     return c
 end
 
 local function divider(p, y)
-    return create("Frame", { Position = UDim2.fromOffset(18, y), Size = UDim2.new(1, -36, 0, 1), BackgroundColor3 = theme.stroke, BackgroundTransparency = 0.92, BorderSizePixel = 0, ZIndex = 7, Parent = p })
+    return create("Frame", { Position = UDim2.fromOffset(18, y), Size = UDim2.new(1, -36, 0, 1), BackgroundColor3 = theme.stroke, BackgroundTransparency = 0.75, BorderSizePixel = 0, ZIndex = 7, Parent = p })
 end
 
 closeDropdowns = function(skip)
@@ -1095,7 +1062,7 @@ closeDropdowns = function(skip)
                 tween(entry.Arrow, { Rotation = 0 }, 0.12, Enum.EasingStyle.Quad)
             end
             if entry.Stroke then
-                tween(entry.Stroke, { Color = Color3.fromRGB(64, 59, 71), Transparency = 0.72 }, 0.12, Enum.EasingStyle.Quad)
+                tween(entry.Stroke, { Color = Color3.fromRGB(124, 114, 136), Transparency = 0.56 }, 0.12, Enum.EasingStyle.Quad)
             end
         end
     end
@@ -1104,19 +1071,19 @@ closeDropdowns = function(skip)
     end
 end
 
-dropdownPopup = create("Frame", { BackgroundColor3 = Color3.fromRGB(19, 17, 22), BackgroundTransparency = 1, BorderSizePixel = 0, Size = UDim2.fromOffset(180, 10), Visible = false, ZIndex = 40, Parent = main })
+dropdownPopup = create("Frame", { BackgroundColor3 = Color3.fromRGB(15, 13, 18), BackgroundTransparency = 1, BorderSizePixel = 0, Size = UDim2.fromOffset(180, 10), Visible = false, ZIndex = 40, Parent = main })
 corner(dropdownPopup, 12)
-local dropdownPopupStroke = stroke(dropdownPopup, Color3.fromRGB(62, 57, 69), 0.64, 1)
+local dropdownPopupStroke = stroke(dropdownPopup, Color3.fromRGB(74, 68, 86), 0.46, 1)
 local dropdownPopupScale = create("UIScale", { Scale = 0.96, Parent = dropdownPopup })
 dropdownPopup.ClipsDescendants = true
 grad(dropdownPopup, 90, {
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(28, 25, 31)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(18, 16, 20)),
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(24, 21, 29)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(10, 9, 13)),
 })
 
 toggleMenu = create("Frame", {
     Size = UDim2.fromOffset(196, 118),
-    BackgroundColor3 = Color3.fromRGB(19, 17, 22),
+    BackgroundColor3 = Color3.fromRGB(15, 13, 18),
     BackgroundTransparency = 1,
     BorderSizePixel = 0,
     Active = true,
@@ -1125,11 +1092,11 @@ toggleMenu = create("Frame", {
     Parent = main,
 })
 corner(toggleMenu, 16)
-toggleMenuStroke = stroke(toggleMenu, Color3.fromRGB(62, 57, 69), 0.64, 1)
+toggleMenuStroke = stroke(toggleMenu, Color3.fromRGB(74, 68, 86), 0.46, 1)
 local toggleMenuScale = create("UIScale", { Scale = 0.94, Parent = toggleMenu })
 grad(toggleMenu, 90, {
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(28, 25, 31)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(18, 16, 20)),
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(24, 21, 29)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(10, 9, 13)),
 })
 create("TextLabel", {
     Position = UDim2.fromOffset(12, 10),
@@ -1147,7 +1114,7 @@ local toggleMenuClose = create("TextButton", {
     AnchorPoint = Vector2.new(1, 0),
     Position = UDim2.new(1, -10, 0, 8),
     Size = UDim2.fromOffset(22, 22),
-    BackgroundColor3 = Color3.fromRGB(28, 25, 31),
+    BackgroundColor3 = Color3.fromRGB(26, 23, 31),
     BorderSizePixel = 0,
     Font = Enum.Font.GothamBold,
     Text = "",
@@ -1156,7 +1123,7 @@ local toggleMenuClose = create("TextButton", {
     Parent = toggleMenu,
 })
 corner(toggleMenuClose, 9)
-local toggleMenuCloseStroke = stroke(toggleMenuClose, Color3.fromRGB(62, 57, 69), 0.66, 1)
+local toggleMenuCloseStroke = stroke(toggleMenuClose, Color3.fromRGB(80, 73, 93), 0.42, 1)
 local toggleMenuCloseIcon = create("TextLabel", {
     AnchorPoint = Vector2.new(0.5, 0.5),
     Position = UDim2.fromScale(0.5, 0.5),
@@ -1176,7 +1143,7 @@ toggleMenuCloseIcon.Rotation = 45
 local modeToggleButton = create("TextButton", {
     Position = UDim2.fromOffset(12, 36),
     Size = UDim2.fromOffset(82, 32),
-    BackgroundColor3 = Color3.fromRGB(32, 29, 35),
+    BackgroundColor3 = Color3.fromRGB(27, 24, 33),
     BorderSizePixel = 0,
     Font = Enum.Font.GothamBold,
     Text = "Toggle",
@@ -1187,12 +1154,12 @@ local modeToggleButton = create("TextButton", {
     Parent = toggleMenu,
 })
 corner(modeToggleButton, 10)
-local modeToggleStroke = stroke(modeToggleButton, Color3.fromRGB(64, 59, 71), 0.72, 1)
+local modeToggleStroke = stroke(modeToggleButton, Color3.fromRGB(79, 72, 92), 0.58, 1)
 
 local modeHoldButton = create("TextButton", {
     Position = UDim2.fromOffset(102, 36),
     Size = UDim2.fromOffset(82, 32),
-    BackgroundColor3 = Color3.fromRGB(32, 29, 35),
+    BackgroundColor3 = Color3.fromRGB(27, 24, 33),
     BorderSizePixel = 0,
     Font = Enum.Font.GothamBold,
     Text = "Hold",
@@ -1203,12 +1170,12 @@ local modeHoldButton = create("TextButton", {
     Parent = toggleMenu,
 })
 corner(modeHoldButton, 10)
-local modeHoldStroke = stroke(modeHoldButton, Color3.fromRGB(64, 59, 71), 0.72, 1)
+local modeHoldStroke = stroke(modeHoldButton, Color3.fromRGB(79, 72, 92), 0.58, 1)
 
 local bindButton = create("TextButton", {
     Position = UDim2.fromOffset(12, 76),
     Size = UDim2.fromOffset(172, 28),
-    BackgroundColor3 = Color3.fromRGB(32, 29, 35),
+    BackgroundColor3 = Color3.fromRGB(27, 24, 33),
     BorderSizePixel = 0,
     Active = true,
     Font = Enum.Font.GothamMedium,
@@ -1221,13 +1188,13 @@ local bindButton = create("TextButton", {
     Parent = toggleMenu,
 })
 corner(bindButton, 10)
-local bindButtonStroke = stroke(bindButton, Color3.fromRGB(64, 59, 71), 0.72, 1)
+local bindButtonStroke = stroke(bindButton, Color3.fromRGB(79, 72, 92), 0.58, 1)
 
 local function styleToggleMenuButton(button, strokeObject, selected)
-    button.BackgroundColor3 = selected and Color3.fromRGB(40, 36, 43) or Color3.fromRGB(32, 29, 35)
-    button.TextColor3 = selected and theme.white or Color3.fromRGB(214, 208, 221)
-    strokeObject.Color = selected and Color3.fromRGB(82, 76, 89) or Color3.fromRGB(64, 59, 71)
-    strokeObject.Transparency = selected and 0.34 or 0.72
+    button.BackgroundColor3 = selected and Color3.fromRGB(42, 37, 49) or Color3.fromRGB(27, 24, 33)
+    button.TextColor3 = selected and theme.white or Color3.fromRGB(230, 224, 238)
+    strokeObject.Color = selected and Color3.fromRGB(126, 117, 144) or Color3.fromRGB(79, 72, 92)
+    strokeObject.Transparency = selected and 0.18 or 0.58
 end
 
 local function armActiveToggleBindCapture()
@@ -1391,36 +1358,36 @@ showDropdownPopup = function(position, size)
 end
 
 local function makeToggle(parent, y, titleText, descText, value, dots, callback)
-    local row = create("Frame", { Position = UDim2.fromOffset(0, y), Size = UDim2.new(1, 0, 0, 68), BackgroundTransparency = 1, ZIndex = 7, Parent = parent })
-    local title = create("TextLabel", { Position = UDim2.fromOffset(18, 8), Size = UDim2.new(1, -128, 0, 20), BackgroundTransparency = 1, Font = Enum.Font.GothamSemibold, Text = titleText, TextColor3 = theme.text, TextSize = 14, TextXAlignment = Enum.TextXAlignment.Left, ZIndex = 8, Parent = row })
-    local desc = create("TextLabel", { Position = UDim2.fromOffset(18, 32), Size = UDim2.new(1, -128, 0, 16), BackgroundTransparency = 1, Font = Enum.Font.GothamMedium, Text = descText, TextColor3 = Color3.fromRGB(99, 94, 109), TextSize = 11, TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd, ZIndex = 8, Parent = row })
+    local row = create("Frame", { Position = UDim2.fromOffset(0, y), Size = UDim2.new(1, 0, 0, 72), BackgroundTransparency = 1, ZIndex = 7, Parent = parent })
+    local title = create("TextLabel", { Position = UDim2.fromOffset(18, 8), Size = UDim2.new(1, -136, 0, 22), BackgroundTransparency = 1, Font = Enum.Font.GothamSemibold, Text = titleText, TextColor3 = theme.text, TextSize = 15, TextXAlignment = Enum.TextXAlignment.Left, ZIndex = 8, Parent = row })
+    local desc = create("TextLabel", { Position = UDim2.fromOffset(18, 34), Size = UDim2.new(1, -136, 0, 18), BackgroundTransparency = 1, Font = Enum.Font.GothamMedium, Text = descText, TextColor3 = theme.muted, TextSize = 12, TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd, ZIndex = 8, Parent = row })
     local dotsButton
     local meta
     if dots then
         dotsButton = create("TextButton", {
             AnchorPoint = Vector2.new(1, 0),
-            Position = UDim2.new(1, -78, 0, 8),
-            Size = UDim2.fromOffset(24, 16),
+            Position = UDim2.new(1, -88, 0, 7),
+            Size = UDim2.fromOffset(24, 18),
             BackgroundTransparency = 1,
             BorderSizePixel = 0,
             Font = Enum.Font.GothamBold,
             Text = "...",
             TextColor3 = theme.text,
-            TextSize = 14,
+            TextSize = 15,
             AutoButtonColor = false,
             ZIndex = 11,
             Parent = row,
         })
         meta = create("TextLabel", {
             AnchorPoint = Vector2.new(1, 0),
-            Position = UDim2.new(1, -18, 0, 31),
-            Size = UDim2.fromOffset(100, 12),
+            Position = UDim2.new(1, -18, 0, 34),
+            Size = UDim2.fromOffset(110, 14),
             BackgroundTransparency = 1,
             Font = Enum.Font.GothamBold,
             Text = "TOGGLE / NONE",
             TextColor3 = Color3.fromRGB(214, 206, 226),
-            TextSize = 8,
-            TextTransparency = 0.3,
+            TextSize = 9,
+            TextTransparency = 0.18,
             TextXAlignment = Enum.TextXAlignment.Right,
             TextTruncate = Enum.TextTruncate.AtEnd,
             ZIndex = 8,
@@ -1428,13 +1395,12 @@ local function makeToggle(parent, y, titleText, descText, value, dots, callback)
         })
         pickerAnchorButtons[#pickerAnchorButtons + 1] = dotsButton
     end
-    local track = create("Frame", { AnchorPoint = Vector2.new(1, 0), Position = UDim2.new(1, -18, 0, 10), Size = UDim2.fromOffset(42, 22), BackgroundColor3 = Color3.fromRGB(41, 37, 46), BorderSizePixel = 0, ZIndex = 8, Parent = row })
-    corner(track, 11)
-    local trackStroke = stroke(track, Color3.fromRGB(66, 61, 74), 0.72, 1)
-    local knob = create("Frame", { Position = UDim2.fromOffset(3, 3), Size = UDim2.fromOffset(16, 16), BackgroundColor3 = Color3.fromRGB(110, 103, 121), BorderSizePixel = 0, ZIndex = 9, Parent = track })
-    corner(knob, 8)
+    local track = create("Frame", { AnchorPoint = Vector2.new(1, 0), Position = UDim2.new(1, -18, 0, 8), Size = UDim2.fromOffset(46, 24), BackgroundColor3 = Color3.fromRGB(101, 92, 110), BorderSizePixel = 0, ZIndex = 8, Parent = row })
+    corner(track, 13)
+    local knob = create("Frame", { Position = UDim2.fromOffset(4, 3), Size = UDim2.fromOffset(18, 18), BackgroundColor3 = Color3.fromRGB(164, 156, 178), BorderSizePixel = 0, ZIndex = 9, Parent = track })
+    corner(knob, 9)
     local rowButton = create("TextButton", { Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, Text = "", AutoButtonColor = false, ZIndex = 10, Parent = row })
-    local ref = { Row = row, Value = value, Title = title, Desc = desc, Track = track, TrackStroke = trackStroke, Knob = knob, DotsButton = dotsButton, Meta = meta, Mode = "Toggle", Keybind = nil, Holding = false, IsListeningBind = false, Callback = callback }
+    local ref = { Row = row, Value = value, Title = title, Desc = desc, Track = track, Knob = knob, DotsButton = dotsButton, Meta = meta, Mode = "Toggle", Keybind = nil, Holding = false, IsListeningBind = false, Callback = callback }
     function ref:RefreshMeta()
         if self.Meta then
             self.Meta.Text = string.format("%s / %s", self.Mode == "Hold" and "HOLD" or "TOGGLE", keybindDisplay(self.Keybind, true))
@@ -1442,22 +1408,10 @@ local function makeToggle(parent, y, titleText, descText, value, dots, callback)
     end
     function ref:Set(v, instant)
         self.Value = v == true
-        local trackColor = self.Value and state.accent:Lerp(Color3.fromRGB(44, 37, 45), 0.2) or Color3.fromRGB(41, 37, 46)
-        local strokeColor = self.Value and state.accent:Lerp(Color3.fromRGB(86, 79, 91), 0.5) or Color3.fromRGB(66, 61, 74)
-        local strokeTransparency = self.Value and 0.52 or 0.72
-        local knobColor = self.Value and Color3.fromRGB(252, 246, 247) or Color3.fromRGB(110, 103, 121)
-        local knobPos = self.Value and UDim2.fromOffset(23, 3) or UDim2.fromOffset(3, 3)
-        if instant then
-            self.Track.BackgroundColor3 = trackColor
-            self.TrackStroke.Color = strokeColor
-            self.TrackStroke.Transparency = strokeTransparency
-            self.Knob.BackgroundColor3 = knobColor
-            self.Knob.Position = knobPos
-        else
-            tween(self.Track, { BackgroundColor3 = trackColor }, 0.14)
-            tween(self.TrackStroke, { Color = strokeColor, Transparency = strokeTransparency }, 0.14)
-            tween(self.Knob, { BackgroundColor3 = knobColor, Position = knobPos }, 0.14)
-        end
+        local trackColor = self.Value and state.accent or Color3.fromRGB(101, 92, 110)
+        local knobColor = self.Value and Color3.fromRGB(255, 188, 178) or Color3.fromRGB(164, 156, 178)
+        local knobPos = self.Value and UDim2.fromOffset(24, 3) or UDim2.fromOffset(4, 3)
+        if instant then self.Track.BackgroundColor3 = trackColor self.Knob.BackgroundColor3 = knobColor self.Knob.Position = knobPos else tween(self.Track, { BackgroundColor3 = trackColor }, 0.14) tween(self.Knob, { BackgroundColor3 = knobColor, Position = knobPos }, 0.14) end
         if not instant and type(self.Callback) == "function" then
             self.Callback(self.Value)
         end
@@ -1665,18 +1619,18 @@ local function makeSlider(parent, y, titleText, descText, min, max, value, forma
 end
 
 local function makeDropdown(parent, y, titleText, descText, width, options, value, callback)
-    local row = create("Frame", { Position = UDim2.fromOffset(0, y), Size = UDim2.new(1, 0, 0, 78), BackgroundTransparency = 1, ZIndex = 7, Parent = parent })
+    local row = create("Frame", { Position = UDim2.fromOffset(0, y), Size = UDim2.new(1, 0, 0, 84), BackgroundTransparency = 1, ZIndex = 7, Parent = parent })
     local textWidth = math.max(126, CARD_WIDTH - width - 82)
-    local title = create("TextLabel", { Position = UDim2.fromOffset(18, 8), Size = UDim2.fromOffset(textWidth, 20), BackgroundTransparency = 1, Font = Enum.Font.GothamSemibold, Text = titleText, TextColor3 = theme.text, TextSize = 14, TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd, ZIndex = 8, Parent = row })
-    local desc = create("TextLabel", { Position = UDim2.fromOffset(18, 34), Size = UDim2.fromOffset(textWidth, 16), BackgroundTransparency = 1, Font = Enum.Font.GothamMedium, Text = descText, TextColor3 = Color3.fromRGB(99, 94, 109), TextSize = 11, TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd, ZIndex = 8, Parent = row })
-    local pill = create("TextButton", { AnchorPoint = Vector2.new(1, 0), Position = UDim2.new(1, -18, 0, 8), Size = UDim2.fromOffset(width, 34), BackgroundColor3 = Color3.fromRGB(31, 28, 34), BorderSizePixel = 0, Text = "", ZIndex = 8, Parent = row })
-    corner(pill, 11)
-    local pillStroke = stroke(pill, Color3.fromRGB(64, 59, 71), 0.72, 1)
+    local title = create("TextLabel", { Position = UDim2.fromOffset(18, 10), Size = UDim2.fromOffset(textWidth, 22), BackgroundTransparency = 1, Font = Enum.Font.GothamSemibold, Text = titleText, TextColor3 = theme.text, TextSize = 14, TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd, ZIndex = 8, Parent = row })
+    local desc = create("TextLabel", { Position = UDim2.fromOffset(18, 38), Size = UDim2.fromOffset(textWidth, 18), BackgroundTransparency = 1, Font = Enum.Font.GothamMedium, Text = descText, TextColor3 = theme.muted, TextSize = 12, TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd, ZIndex = 8, Parent = row })
+    local pill = create("TextButton", { AnchorPoint = Vector2.new(1, 0), Position = UDim2.new(1, -18, 0, 10), Size = UDim2.fromOffset(width, 38), BackgroundColor3 = Color3.fromRGB(27, 24, 33), BorderSizePixel = 0, Text = "", ZIndex = 8, Parent = row })
+    corner(pill, 12)
+    local pillStroke = stroke(pill, Color3.fromRGB(79, 72, 92), 0.58, 1)
     local pillGrad = grad(pill, 90, {
-        ColorSequenceKeypoint.new(0, Color3.fromRGB(37, 34, 41)),
-        ColorSequenceKeypoint.new(1, Color3.fromRGB(26, 23, 29)),
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(34, 30, 39)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(17, 15, 21)),
     })
-    local pillText = create("TextLabel", { Position = UDim2.fromOffset(12, 0), Size = UDim2.new(1, -30, 1, 0), BackgroundTransparency = 1, Font = Enum.Font.GothamMedium, Text = value, TextColor3 = theme.text, TextSize = 12, TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd, ZIndex = 9, Parent = pill })
+    local pillText = create("TextLabel", { Position = UDim2.fromOffset(12, 0), Size = UDim2.new(1, -30, 1, 0), BackgroundTransparency = 1, Font = Enum.Font.GothamMedium, Text = value, TextColor3 = theme.text, TextSize = 13, TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd, ZIndex = 9, Parent = pill })
     local arrowLabel = create("TextLabel", { AnchorPoint = Vector2.new(1, 0.5), Position = UDim2.new(1, -10, 0.5, 0), Size = UDim2.fromOffset(12, 12), BackgroundTransparency = 1, Font = Enum.Font.GothamBold, Text = "v", TextColor3 = theme.muted, TextSize = 12, ZIndex = 9, Parent = pill })
     local ref = { Row = row, Open = false, Value = value, Text = pillText, Title = title, Desc = desc, Options = options, Width = width, Pill = pill, Arrow = arrowLabel, Stroke = pillStroke }
     dropdowns[#dropdowns + 1] = ref
@@ -1690,14 +1644,14 @@ local function makeDropdown(parent, y, titleText, descText, width, options, valu
         if ref.Open then
             ref.Open = false
             tween(ref.Arrow, { Rotation = 0 }, 0.14, Enum.EasingStyle.Quart)
-            tween(ref.Stroke, { Color = Color3.fromRGB(64, 59, 71), Transparency = 0.72 }, 0.14, Enum.EasingStyle.Quart)
+            tween(ref.Stroke, { Color = Color3.fromRGB(79, 72, 92), Transparency = 0.58 }, 0.14, Enum.EasingStyle.Quart)
             hideDropdownPopup()
             return
         end
         closeDropdowns()
         ref.Open = true
         tween(ref.Arrow, { Rotation = 180 }, 0.14, Enum.EasingStyle.Quart)
-        tween(ref.Stroke, { Color = Color3.fromRGB(82, 76, 89), Transparency = 0.34 }, 0.14, Enum.EasingStyle.Quart)
+        tween(ref.Stroke, { Color = Color3.fromRGB(126, 117, 144), Transparency = 0.18 }, 0.14, Enum.EasingStyle.Quart)
         for _, button in ipairs(dropdownPopupButtons) do
             button:Destroy()
         end
@@ -1714,14 +1668,14 @@ local function makeDropdown(parent, y, titleText, descText, width, options, valu
             local opt = create("TextButton", {
                 Position = UDim2.fromOffset(4, 4 + (index - 1) * 34),
                 Size = UDim2.new(1, -8, 0, 30),
-                BackgroundColor3 = selected and Color3.fromRGB(44, 40, 48) or Color3.fromRGB(29, 26, 32),
+                BackgroundColor3 = selected and Color3.fromRGB(42, 37, 49) or Color3.fromRGB(27, 24, 33),
                 BorderSizePixel = 0,
                 Text = "",
                 ZIndex = 41,
                 Parent = dropdownPopup,
             })
             corner(opt, 9)
-            local optStroke = stroke(opt, selected and Color3.fromRGB(82, 76, 89) or Color3.fromRGB(62, 57, 69), selected and 0.42 or 0.74, 1)
+            local optStroke = stroke(opt, selected and Color3.fromRGB(126, 117, 144) or Color3.fromRGB(79, 72, 92), selected and 0.18 or 0.58, 1)
             local label = create("TextLabel", {
                 Position = UDim2.fromOffset(12, 0),
                 Size = UDim2.new(1, -24, 1, 0),
@@ -1736,19 +1690,19 @@ local function makeDropdown(parent, y, titleText, descText, width, options, valu
                 Parent = opt,
             })
             opt.MouseEnter:Connect(function()
-                tween(opt, { BackgroundColor3 = selected and Color3.fromRGB(50, 45, 55) or Color3.fromRGB(35, 31, 38) }, 0.12, Enum.EasingStyle.Quad)
-                tween(optStroke, { Transparency = selected and 0.3 or 0.56 }, 0.12, Enum.EasingStyle.Quad)
+                tween(opt, { BackgroundColor3 = selected and Color3.fromRGB(50, 44, 58) or Color3.fromRGB(34, 30, 39) }, 0.12, Enum.EasingStyle.Quad)
+                tween(optStroke, { Transparency = selected and 0.12 or 0.42 }, 0.12, Enum.EasingStyle.Quad)
             end)
             opt.MouseLeave:Connect(function()
-                tween(opt, { BackgroundColor3 = selected and Color3.fromRGB(44, 40, 48) or Color3.fromRGB(29, 26, 32) }, 0.12, Enum.EasingStyle.Quad)
-                tween(optStroke, { Transparency = selected and 0.42 or 0.74 }, 0.12, Enum.EasingStyle.Quad)
+                tween(opt, { BackgroundColor3 = selected and Color3.fromRGB(42, 37, 49) or Color3.fromRGB(27, 24, 33) }, 0.12, Enum.EasingStyle.Quad)
+                tween(optStroke, { Transparency = selected and 0.18 or 0.58 }, 0.12, Enum.EasingStyle.Quad)
             end)
             opt.MouseButton1Click:Connect(function()
                 ref.Value = option
                 ref.Text.Text = option
                 ref.Open = false
                 tween(ref.Arrow, { Rotation = 0 }, 0.14, Enum.EasingStyle.Quart)
-                tween(ref.Stroke, { Color = Color3.fromRGB(64, 59, 71), Transparency = 0.72 }, 0.14, Enum.EasingStyle.Quart)
+                tween(ref.Stroke, { Color = Color3.fromRGB(79, 72, 92), Transparency = 0.58 }, 0.14, Enum.EasingStyle.Quart)
                 hideDropdownPopup()
                 if type(callback) == "function" then
                     callback(option)
@@ -1787,13 +1741,13 @@ end
 
 local function makeButton(parent, y, titleText, descText, buttonText, callback)
     local row = create("Frame", { Position = UDim2.fromOffset(0, y), Size = UDim2.new(1, 0, 0, 72), BackgroundTransparency = 1, ZIndex = 7, Parent = parent })
-    local title = create("TextLabel", { Position = UDim2.fromOffset(18, 8), Size = UDim2.new(1, -142, 0, 22), BackgroundTransparency = 1, Font = Enum.Font.GothamSemibold, Text = titleText, TextColor3 = theme.text, TextSize = 14, TextXAlignment = Enum.TextXAlignment.Left, ZIndex = 8, Parent = row })
-    local desc = create("TextLabel", { Position = UDim2.fromOffset(18, 34), Size = UDim2.new(1, -142, 0, 16), BackgroundTransparency = 1, Font = Enum.Font.GothamMedium, Text = descText, TextColor3 = Color3.fromRGB(99, 94, 109), TextSize = 11, TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd, ZIndex = 8, Parent = row })
+    local title = create("TextLabel", { Position = UDim2.fromOffset(18, 8), Size = UDim2.new(1, -142, 0, 22), BackgroundTransparency = 1, Font = Enum.Font.GothamSemibold, Text = titleText, TextColor3 = theme.text, TextSize = 15, TextXAlignment = Enum.TextXAlignment.Left, ZIndex = 8, Parent = row })
+    local desc = create("TextLabel", { Position = UDim2.fromOffset(18, 34), Size = UDim2.new(1, -142, 0, 18), BackgroundTransparency = 1, Font = Enum.Font.GothamMedium, Text = descText, TextColor3 = theme.muted, TextSize = 12, TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd, ZIndex = 8, Parent = row })
     local button = create("TextButton", {
         AnchorPoint = Vector2.new(1, 0),
         Position = UDim2.new(1, -18, 0, 10),
         Size = UDim2.fromOffset(104, 34),
-        BackgroundColor3 = Color3.fromRGB(32, 29, 35),
+        BackgroundColor3 = Color3.fromRGB(27, 24, 33),
         BorderSizePixel = 0,
         Font = Enum.Font.GothamBold,
         Text = buttonText or "RUN",
@@ -1804,18 +1758,18 @@ local function makeButton(parent, y, titleText, descText, buttonText, callback)
         Parent = row,
     })
     corner(button, 12)
-    local buttonStroke = stroke(button, Color3.fromRGB(64, 59, 71), 0.72, 1)
+    local buttonStroke = stroke(button, Color3.fromRGB(79, 72, 92), 0.58, 1)
     grad(button, 90, {
-        ColorSequenceKeypoint.new(0, Color3.fromRGB(37, 34, 41)),
-        ColorSequenceKeypoint.new(1, Color3.fromRGB(26, 23, 29)),
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(34, 30, 39)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(17, 15, 21)),
     })
     button.MouseEnter:Connect(function()
-        tween(button, { BackgroundColor3 = Color3.fromRGB(39, 36, 43) }, 0.12, Enum.EasingStyle.Quad)
-        tween(buttonStroke, { Transparency = 0.34, Color = Color3.fromRGB(82, 76, 89) }, 0.12, Enum.EasingStyle.Quad)
+        tween(button, { BackgroundColor3 = Color3.fromRGB(35, 31, 42) }, 0.12, Enum.EasingStyle.Quad)
+        tween(buttonStroke, { Transparency = 0.22, Color = Color3.fromRGB(126, 117, 144) }, 0.12, Enum.EasingStyle.Quad)
     end)
     button.MouseLeave:Connect(function()
-        tween(button, { BackgroundColor3 = Color3.fromRGB(32, 29, 35) }, 0.12, Enum.EasingStyle.Quad)
-        tween(buttonStroke, { Transparency = 0.72, Color = Color3.fromRGB(64, 59, 71) }, 0.12, Enum.EasingStyle.Quad)
+        tween(button, { BackgroundColor3 = Color3.fromRGB(27, 24, 33) }, 0.12, Enum.EasingStyle.Quad)
+        tween(buttonStroke, { Transparency = 0.58, Color = Color3.fromRGB(79, 72, 92) }, 0.12, Enum.EasingStyle.Quad)
     end)
     button.MouseButton1Click:Connect(function()
         if type(callback) == "function" then
@@ -1841,13 +1795,13 @@ end
 local function makeTextInput(parent, y, titleText, descText, placeholder, value, callback)
     local row = create("Frame", { Position = UDim2.fromOffset(0, y), Size = UDim2.new(1, 0, 0, 84), BackgroundTransparency = 1, ZIndex = 7, Parent = parent })
     local title = create("TextLabel", { Position = UDim2.fromOffset(18, 10), Size = UDim2.fromOffset(126, 22), BackgroundTransparency = 1, Font = Enum.Font.GothamSemibold, Text = titleText, TextColor3 = theme.text, TextSize = 14, TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd, ZIndex = 8, Parent = row })
-    local desc = create("TextLabel", { Position = UDim2.fromOffset(18, 38), Size = UDim2.fromOffset(126, 16), BackgroundTransparency = 1, Font = Enum.Font.GothamMedium, Text = descText, TextColor3 = Color3.fromRGB(99, 94, 109), TextSize = 11, TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd, ZIndex = 8, Parent = row })
-    local boxFrame = create("Frame", { AnchorPoint = Vector2.new(1, 0), Position = UDim2.new(1, -18, 0, 10), Size = UDim2.fromOffset(170, 36), BackgroundColor3 = Color3.fromRGB(31, 28, 34), BorderSizePixel = 0, ZIndex = 8, Parent = row })
+    local desc = create("TextLabel", { Position = UDim2.fromOffset(18, 38), Size = UDim2.fromOffset(126, 18), BackgroundTransparency = 1, Font = Enum.Font.GothamMedium, Text = descText, TextColor3 = theme.muted, TextSize = 12, TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd, ZIndex = 8, Parent = row })
+    local boxFrame = create("Frame", { AnchorPoint = Vector2.new(1, 0), Position = UDim2.new(1, -18, 0, 10), Size = UDim2.fromOffset(170, 38), BackgroundColor3 = Color3.fromRGB(27, 24, 33), BorderSizePixel = 0, ZIndex = 8, Parent = row })
     corner(boxFrame, 12)
-    local boxStroke = stroke(boxFrame, Color3.fromRGB(64, 59, 71), 0.72, 1)
+    local boxStroke = stroke(boxFrame, Color3.fromRGB(79, 72, 92), 0.58, 1)
     grad(boxFrame, 90, {
-        ColorSequenceKeypoint.new(0, Color3.fromRGB(37, 34, 41)),
-        ColorSequenceKeypoint.new(1, Color3.fromRGB(26, 23, 29)),
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(34, 30, 39)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(17, 15, 21)),
     })
     local box = create("TextBox", {
         Position = UDim2.fromOffset(12, 0),
@@ -1855,7 +1809,7 @@ local function makeTextInput(parent, y, titleText, descText, placeholder, value,
         BackgroundTransparency = 1,
         Font = Enum.Font.GothamMedium,
         PlaceholderText = placeholder or "Enter text",
-        PlaceholderColor3 = Color3.fromRGB(102, 96, 112),
+        PlaceholderColor3 = Color3.fromRGB(136, 128, 147),
         Text = tostring(value or ""),
         TextColor3 = theme.text,
         TextSize = 13,
@@ -1865,12 +1819,12 @@ local function makeTextInput(parent, y, titleText, descText, placeholder, value,
         Parent = boxFrame,
     })
     box.Focused:Connect(function()
-        tween(boxFrame, { BackgroundColor3 = Color3.fromRGB(36, 32, 39) }, 0.12, Enum.EasingStyle.Quad)
-        tween(boxStroke, { Transparency = 0.32, Color = Color3.fromRGB(82, 76, 89) }, 0.12, Enum.EasingStyle.Quad)
+        tween(boxFrame, { BackgroundColor3 = Color3.fromRGB(31, 27, 38) }, 0.12, Enum.EasingStyle.Quad)
+        tween(boxStroke, { Transparency = 0.18, Color = Color3.fromRGB(126, 117, 144) }, 0.12, Enum.EasingStyle.Quad)
     end)
     box.FocusLost:Connect(function()
-        tween(boxFrame, { BackgroundColor3 = Color3.fromRGB(31, 28, 34) }, 0.12, Enum.EasingStyle.Quad)
-        tween(boxStroke, { Transparency = 0.72, Color = Color3.fromRGB(64, 59, 71) }, 0.12, Enum.EasingStyle.Quad)
+        tween(boxFrame, { BackgroundColor3 = Color3.fromRGB(27, 24, 33) }, 0.12, Enum.EasingStyle.Quad)
+        tween(boxStroke, { Transparency = 0.58, Color = Color3.fromRGB(79, 72, 92) }, 0.12, Enum.EasingStyle.Quad)
         if type(callback) == "function" then
             callback(box.Text)
         end
@@ -2558,17 +2512,17 @@ end)
 
 onAccent(function(c)
     refreshPickerVisuals(c)
-    brandBox.BackgroundColor3 = Color3.fromRGB(18, 16, 20)
-    brandBoxStroke.Color = c:Lerp(Color3.fromRGB(86, 79, 95), 0.38)
+    brandBox.BackgroundColor3 = Color3.fromRGB(20, 18, 24)
+    brandBoxStroke.Color = c:Lerp(theme.white, 0.18)
     brandBoxGrad.Color = ColorSequence.new({
-        ColorSequenceKeypoint.new(0, Color3.fromRGB(25, 22, 27)),
-        ColorSequenceKeypoint.new(1, Color3.fromRGB(17, 15, 20)),
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(28, 25, 32)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(18, 16, 22)),
     })
     sideMark.BackgroundColor3 = c
     activeTabPill.BackgroundColor3 = theme.panelSoft
     activeTabGrad.Color = ColorSequence.new({
-        ColorSequenceKeypoint.new(0, Color3.fromRGB(52, 47, 57)),
-        ColorSequenceKeypoint.new(1, Color3.fromRGB(45, 41, 49)),
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(107, 97, 114)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(90, 81, 96)),
     })
     for _, ref in pairs(tabRefs) do
         ref.Sync(false)
@@ -2951,9 +2905,6 @@ task.defer(function()
 end)
 
 task.spawn(function()
-    if not brandTitleSweep.Visible then
-        return
-    end
     while screenGui and screenGui.Parent and brandTitleShine and brandTitleShine.Parent do
         brandTitleShine.Position = UDim2.fromOffset(-128, 0)
         brandTitleShineGlow.Position = UDim2.fromOffset(-128, 0)
