@@ -877,6 +877,11 @@ local function switchTab(name, x, w)
     local previousX = tabRefs[previousTab] and tabRefs[previousTab].X or x
     local direction = x >= previousX and 1 or -1
     state.tab = name
+    if state._tabHooks then
+        for _, fn in ipairs(state._tabHooks) do
+            pcall(fn, name)
+        end
+    end
     tabTransitionToken = tabTransitionToken + 1
     local token = tabTransitionToken
     contentFade.Visible = true
@@ -907,6 +912,28 @@ local function switchTab(name, x, w)
             end
         end)
     end)
+end
+
+local function setSection(name)
+    if not sideRefs[name] then
+        return false
+    end
+    closeDropdowns()
+    closeToggleMenu(true)
+    state.section = name
+    for key, ref in pairs(sideRefs) do
+        local on = key == name
+        ref.Sync(false)
+        if on then
+            tween(sideMark, { Position = UDim2.fromOffset(88, ref.Y + 11), BackgroundColor3 = state.accent }, 0.16)
+        end
+    end
+    if state._sectionHooks then
+        for _, fn in ipairs(state._sectionHooks) do
+            pcall(fn, name)
+        end
+    end
+    return true
 end
 
 local function makeSideButton(name, iconType, y)
@@ -968,14 +995,7 @@ local function makeSideButton(name, iconType, y)
         syncVisuals(false)
     end)
     button.MouseButton1Click:Connect(function()
-        closeDropdowns()
-        closeToggleMenu(true)
-        state.section = name
-        for key, ref in pairs(sideRefs) do
-            local on = key == name
-            ref.Sync(false)
-            if on then tween(sideMark, { Position = UDim2.fromOffset(88, ref.Y + 11), BackgroundColor3 = state.accent }, 0.16) end
-        end
+        setSection(name)
     end)
     sideRefs[name] = { Frame = frame, Icon = icon, Label = label, Glow = hoverGlow, Y = y, Sync = syncVisuals }
     syncVisuals(true)
@@ -2605,6 +2625,8 @@ local function createGroupBuilder(parentFrame, startY)
 end
 
 local api = { Gui = screenGui, Controls = controls, State = state }
+api._flow_uiv2_signature = "flow-ui-v2-native-window"
+api._flow_uiv2_version = 3
 
 api.Elements = {
     Toggle = makeToggle,
@@ -2634,6 +2656,25 @@ function api:SetAccentColor(color)
     if typeof(color) == "Color3" then
         setAccent(color)
     end
+end
+
+function api:SetToggleKey(keyCode)
+    if typeof(keyCode) == "EnumItem" and keyCode.EnumType == Enum.KeyCode then
+        state.key = keyCode
+    end
+end
+
+function api:Notify(notificationConfig)
+    notificationConfig = notificationConfig or {}
+    local title = tostring(notificationConfig.Title or "Notification")
+    local description = tostring(notificationConfig.Description or "")
+    pcall(function()
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = title,
+            Text = description,
+            Duration = notificationConfig.Duration or 3,
+        })
+    end)
 end
 
 function api:SetBrand(title, subtitle)
@@ -2691,6 +2732,26 @@ function api:SetSideTexts(map)
     end
 end
 
+function api:SetSection(name)
+    return setSection(name)
+end
+
+function api:OnSectionChanged(callback)
+    if type(callback) ~= "function" then
+        return
+    end
+    state._sectionHooks = state._sectionHooks or {}
+    state._sectionHooks[#state._sectionHooks + 1] = callback
+end
+
+function api:OnTabChanged(callback)
+    if type(callback) ~= "function" then
+        return
+    end
+    state._tabHooks = state._tabHooks or {}
+    state._tabHooks[#state._tabHooks + 1] = callback
+end
+
 function api:SetTabVisible(tabName, isVisible)
     local ref = tabRefs[tabName]
     if ref and ref.Frame then
@@ -2708,12 +2769,14 @@ end
 function api:SetTabBarVisible(isVisible)
     local visible = isVisible ~= false
     chipBar.Visible = visible
-    chipBarShadow.Visible = visible
     activeTabPill.Visible = visible
     tabArrowWrap.Visible = visible
 end
 
 function api:ClearContent()
+    closeDropdowns()
+    closeToggleMenu(true)
+    setPickerOpen(false)
     content.CanvasPosition = Vector2.new(0, 0)
     for _, child in ipairs(content:GetChildren()) do
         if child ~= contentFade then
@@ -2721,6 +2784,281 @@ function api:ClearContent()
         end
     end
     content.CanvasSize = UDim2.fromOffset(0, 0)
+end
+
+function api.new(config)
+    config = config or {}
+
+    api:ClearContent()
+    state._sectionHooks = {}
+    state._tabHooks = {}
+    api:SetBrand(config.Name or "Flow", config.Subtitle or "Reusable UI V2")
+
+    if config.AccentColor then
+        api:SetAccentColor(config.AccentColor)
+    end
+    if config.ToggleKey then
+        api:SetToggleKey(config.ToggleKey)
+    end
+    if config.ProfileName or config.ProfileExtra then
+        api:SetProfile(config.ProfileName, config.ProfileExtra)
+    end
+
+    local root = Instance.new("Frame")
+    root.Name = "FlowUILayoutRoot"
+    root.BackgroundTransparency = 1
+    root.BorderSizePixel = 0
+    root.Position = UDim2.fromOffset(0, 0)
+    root.Size = UDim2.new(1, 0, 0, 0)
+    root.Parent = content
+
+    local routeOrder = config.RouteOrder or { "Combat", "Visuals", "Movement", "Config", "Folder", "Settings" }
+    local routeColumns = {}
+    local tabRoutes = {}
+    local nextRouteIndex = 1
+    local allEntries = {}
+    local activeRoute = nil
+    local showSectionInLabel = config.ShowSectionInLabel == true
+    local hideUnusedSides = config.HideUnusedSides ~= false
+    local useTabBar = config.UseTabBar == true
+
+    for _, routeName in ipairs(routeOrder) do
+        routeColumns[routeName] = {
+            Left = { x = LEFT_COLUMN_X, groups = {} },
+            Right = { x = RIGHT_COLUMN_X, groups = {} },
+        }
+        if hideUnusedSides and api.SetSideVisible then
+            api:SetSideVisible(routeName, false)
+        end
+    end
+
+    api:SetTabBarVisible(useTabBar)
+
+    local function layoutRoute(routeName)
+        local maxY = 8
+        local routeInfo = routeColumns[routeName]
+        if not routeInfo then
+            return maxY
+        end
+        for _, sideName in ipairs({ "Left", "Right" }) do
+            local column = routeInfo[sideName]
+            local y = 8
+            for _, entry in ipairs(column.groups) do
+                local height = math.max(172, entry.Card.Size.Y.Offset)
+                entry.Label.Position = UDim2.fromOffset(column.x, y)
+                entry.Card.Position = UDim2.fromOffset(column.x, y + 24)
+                entry.Card.Size = UDim2.fromOffset(entry.Card.Size.X.Offset, height)
+                y = y + 24 + height + 16
+            end
+            if y > maxY then
+                maxY = y
+            end
+        end
+        return maxY
+    end
+
+    local function updateRoute(routeName)
+        if not routeColumns[routeName] then
+            return
+        end
+        activeRoute = routeName
+        local maxY = layoutRoute(routeName)
+        for _, entry in ipairs(allEntries) do
+            local visible = entry.Route == routeName
+            entry.Label.Visible = visible
+            entry.Card.Visible = visible
+        end
+        root.Size = UDim2.new(1, 0, 0, maxY + 24)
+        content.CanvasSize = UDim2.fromOffset(0, maxY + 56)
+        content.CanvasPosition = Vector2.new(0, 0)
+    end
+
+        local function ensureRouteForTab(tabName)
+            local routeName = tabRoutes[tabName]
+            if routeName then
+                return routeName
+            end
+
+            routeName = (config.RouteMap and config.RouteMap[tabName]) or routeOrder[nextRouteIndex] or routeOrder[#routeOrder]
+            if not routeColumns[routeName] then
+                routeName = routeOrder[nextRouteIndex] or routeOrder[1]
+            end
+            tabRoutes[tabName] = routeName
+
+        if routeOrder[nextRouteIndex] == routeName then
+            nextRouteIndex = nextRouteIndex + 1
+        end
+
+        if api.SetSideVisible then
+            api:SetSideVisible(routeName, true)
+        end
+        if api.SetSideText then
+            api:SetSideText(routeName, tabName)
+        end
+
+        if not activeRoute then
+            api:SetSection(routeName)
+            updateRoute(routeName)
+        end
+
+        return routeName
+    end
+
+    api:OnSectionChanged(function(routeName)
+        if routeColumns[routeName] then
+            updateRoute(routeName)
+        end
+    end)
+
+    local function wrapBuilder(builder, entry)
+        local group = {}
+
+        local function push(methodName, controlConfig)
+            local result = builder[methodName](builder, controlConfig or {})
+            updateRoute(activeRoute or entry.Route)
+            return result
+        end
+
+        function group:AddToggle(controlConfig)
+            return push("AddToggle", controlConfig)
+        end
+
+        function group:AddKeybindToggle(controlConfig)
+            return push("AddKeybindToggle", controlConfig)
+        end
+
+        function group:AddSlider(controlConfig)
+            return push("AddSlider", controlConfig)
+        end
+
+        function group:AddDropdown(controlConfig)
+            return push("AddDropdown", controlConfig)
+        end
+
+        function group:AddMultiDropdown(controlConfig)
+            return push("AddMultiDropdown", controlConfig)
+        end
+
+        function group:AddButton(controlConfig)
+            return push("AddButton", controlConfig)
+        end
+
+        function group:AddKeybind(controlConfig)
+            return push("AddKeybind", controlConfig)
+        end
+
+        function group:AddTextInput(controlConfig)
+            return push("AddTextInput", controlConfig)
+        end
+
+        function group:AddTextbox(controlConfig)
+            return self:AddTextInput(controlConfig)
+        end
+
+        function group:AddTextBox(controlConfig)
+            return self:AddTextInput(controlConfig)
+        end
+
+        function group:AddColorPicker(controlConfig)
+            return push("AddColorPicker", controlConfig)
+        end
+
+        function group:AddDivider(spacing)
+            builder:AddDivider(spacing)
+            updateRoute(activeRoute or entry.Route)
+        end
+
+        function group:AddLabel(controlConfig)
+            local ref = builder:AddLabel(controlConfig)
+            updateRoute(activeRoute or entry.Route)
+            return ref
+        end
+
+        return group
+    end
+
+    local window = {}
+
+    function window:SetToggleKey(keyCode)
+        api:SetToggleKey(keyCode)
+    end
+
+    function window:SetAccentColor(color)
+        api:SetAccentColor(color)
+    end
+
+    function window:SetBrand(title, subtitle)
+        api:SetBrand(title, subtitle)
+    end
+
+    function window:SetProfile(name, extra)
+        api:SetProfile(name, extra)
+    end
+
+    function window:Notify(notificationConfig)
+        api:Notify(notificationConfig)
+    end
+
+    function window:SetPage(tabName)
+        local routeName = tabRoutes[tabName]
+        if routeName then
+            api:SetSection(routeName)
+            updateRoute(routeName)
+        end
+    end
+
+    function window:CreateSection(sectionConfig)
+        sectionConfig = sectionConfig or {}
+        local sectionName = tostring(sectionConfig.Name or "Section")
+        local section = {}
+
+        function section:AddTab(tabConfig)
+            tabConfig = tabConfig or {}
+            local tabName = tostring(tabConfig.Name or "Tab")
+            local routeName = ensureRouteForTab(tabName)
+            local tab = {}
+
+            function tab:AddGroup(groupConfig)
+                groupConfig = groupConfig or {}
+                local sideName = string.lower(tostring(groupConfig.Side or "Left")) == "right" and "Right" or "Left"
+                local routeInfo = routeColumns[routeName]
+                local column = routeInfo[sideName]
+                local startY = 8
+                if #column.groups > 0 then
+                    local last = column.groups[#column.groups]
+                    startY = last.Card.Position.Y.Offset + last.Card.Size.Y.Offset + 16
+                end
+
+                local groupName = tostring(groupConfig.Name or "Group")
+                local labelText = showSectionInLabel and (sectionName .. " / " .. groupName) or groupName
+                local label = api:CreateSectionLabel(column.x, startY, labelText, root)
+                local cardRef = api:CreateCard(column.x, startY + 24, groupConfig.Height or 172, root)
+                local builder = api:CreateGroupBuilder(cardRef, 12)
+
+                local entry = {
+                    Label = label,
+                    Card = cardRef,
+                    Builder = builder,
+                    Route = routeName,
+                }
+
+                table.insert(column.groups, entry)
+                table.insert(allEntries, entry)
+                updateRoute(activeRoute or routeName)
+                return wrapBuilder(builder, entry)
+            end
+
+            return tab
+        end
+
+        return section
+    end
+
+    function window:Destroy()
+        api:Destroy()
+    end
+
+    return window
 end
 
 function api:CreateCard(x, y, height, parentFrame)
