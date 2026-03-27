@@ -2691,6 +2691,28 @@ function api:SetSideTexts(map)
     end
 end
 
+function api:SetTabVisible(tabName, isVisible)
+    local ref = tabRefs[tabName]
+    if ref and ref.Frame then
+        ref.Frame.Visible = isVisible ~= false
+    end
+end
+
+function api:SetSideVisible(sideName, isVisible)
+    local ref = sideRefs[sideName]
+    if ref and ref.Frame then
+        ref.Frame.Visible = isVisible ~= false
+    end
+end
+
+function api:SetTabBarVisible(isVisible)
+    local visible = isVisible ~= false
+    chipBar.Visible = visible
+    chipBarShadow.Visible = visible
+    activeTabPill.Visible = visible
+    tabArrowWrap.Visible = visible
+end
+
 function api:ClearContent()
     content.CanvasPosition = Vector2.new(0, 0)
     for _, child in ipairs(content:GetChildren()) do
