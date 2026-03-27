@@ -2822,6 +2822,18 @@ function api.new(config)
     local hideUnusedSides = config.HideUnusedSides ~= false
     local useTabBar = config.UseTabBar == true
 
+    if hideUnusedSides and api.SetSideVisible then
+        for sideName in pairs(sideRefs) do
+            api:SetSideVisible(sideName, false)
+        end
+    end
+
+    if api.SetTabVisible then
+        for tabName in pairs(tabRefs) do
+            api:SetTabVisible(tabName, useTabBar)
+        end
+    end
+
     for _, routeName in ipairs(routeOrder) do
         routeColumns[routeName] = {
             Left = { x = LEFT_COLUMN_X, groups = {} },
