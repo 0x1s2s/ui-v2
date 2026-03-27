@@ -2771,6 +2771,13 @@ function api:SetTabBarVisible(isVisible)
     chipBar.Visible = visible
     activeTabPill.Visible = visible
     tabArrowWrap.Visible = visible
+    if visible then
+        content.Position = UDim2.fromOffset(CONTENT_X, CONTENT_Y)
+        content.Size = UDim2.fromOffset(796, 448)
+    else
+        content.Position = UDim2.fromOffset(CONTENT_X, CONTENT_Y - 74)
+        content.Size = UDim2.fromOffset(796, 448 + 74)
+    end
 end
 
 function api:ClearContent()
@@ -3066,8 +3073,38 @@ function api.new(config)
         return section
     end
 
+    function window:SetSection(name)
+        if routeColumns[name] then
+            api:SetSection(name)
+            updateRoute(name)
+        end
+    end
+
+    function window:SetSideVisible(sideName, isVisible)
+        api:SetSideVisible(sideName, isVisible)
+    end
+
+    function window:SetSideText(sideName, text)
+        api:SetSideText(sideName, text)
+    end
+
+    function window:SetTabBarVisible(isVisible)
+        api:SetTabBarVisible(isVisible)
+    end
+
+    function window:SetTabVisible(tabName, isVisible)
+        api:SetTabVisible(tabName, isVisible)
+    end
+
     function window:Destroy()
         api:Destroy()
+    end
+
+    -- Force initial route display so content is visible immediately
+    local firstRoute = routeOrder[1]
+    if firstRoute and routeColumns[firstRoute] then
+        api:SetSection(firstRoute)
+        updateRoute(firstRoute)
     end
 
     return window
